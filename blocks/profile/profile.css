@@ -6,7 +6,7 @@
   grid-template-rows: 120px;
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 660px) {
   .profile {
     display: flex;
     flex-direction: column;

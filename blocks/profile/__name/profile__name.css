@@ -5,12 +5,17 @@
   font-weight: 500;
   font-family: 'Inter', sans-serif;
   margin: 0;
-  display: inline;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 294px;
 }
 
-@media screen and (max-width:640px) {
+@media screen and (max-width:660px) {
   .profile__name {
     font-size: 27px;
     line-height: 33px;
+    width: 189px;
+    margin: 0 auto;
   }
 }

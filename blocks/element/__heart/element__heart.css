@@ -5,6 +5,8 @@
   margin-right: 20px;
   align-self: center;
   cursor: pointer;
+  border: 0;
+  background-color: white;
 }
 
 .element__heart:hover {

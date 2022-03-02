@@ -1,10 +1,15 @@
 .profile__edit {
-  height: 10px;
-  width: 10px;
-  padding: 6px;
+  height: 24px;
+  width: 24px;
+  padding: 0;
   border: 1px solid #fff;
-  display: inline;
-  margin-left: 18px;
+  background-color: black;
+  background-image: url(../../../images/profile-edit.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  right: 0;
+  top: 15px;
   cursor: pointer;
 }
 
@@ -12,10 +17,13 @@
   opacity: .6;
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 660px) {
   .profile__edit {
+    width: 18px;
+    height: 18px;
+    background-size: 7.5px 7.5px;
     position: absolute;
     top: 8px;
-    right: -37px;
+    right: 19px;
   }
 }
