@@ -21,62 +21,50 @@
       <button type="button" class="profile__add"  aria-label="Кнопка добавления места"></button>
     </section>
     <section class="elements">
-      <div class="element">
-        <img class="element__image" src="./images/karachaevsk.jpg" alt="Карачаевск">
-        <div class="element__description">
-          <p class="element__name">Карачаевск</p>
-          <button type="button" class="element__heart"></button>
-        </div>
-      </div>
-      <div class="element">
-        <img class="element__image" src="./images/Elbrus.png" alt="Эльбрус">
-        <div class="element__description">
-          <p class="element__name">Гора Эльбрус</p>
-          <button type="button" class="element__heart element__heart_active"></button>
-        </div>
-      </div>
-      <div class="element">
-        <img class="element__image" src="./images/dombai.png" alt="Домбай"> 
-        <div class="element__description">
-          <p class="element__name">Домбай</p>
-          <button type="button" class="element__heart"></button>
-        </div>
-      </div>
-      <div class="element">
-        <img class="element__image" src="./images/Elbrus.png" alt="Эльбрус">
-        <div class="element__description">
-          <p class="element__name">Гора Эльбрус</p>
-          <button type="button" class="element__heart"></button>
-        </div>
-      </div>
-      <div class="element">
-        <img class="element__image" src="./images/dombai.png" alt="Домбай">
-        <div class="element__description">
-          <p class="element__name">Домбай</p>
-          <button type="button" class="element__heart"></button>
-        </div>
-      </div>
-      <div class="element">
-        <img class="element__image" src="./images/karachaevsk.jpg" alt="Карачаевск">
-        <div class="element__description">
-          <p class="element__name">Карачаево-Черкесия</p>
-          <button type="button" class="element__heart"></button>
-        </div>
-      </div>
+
     </section>
-    <section class="popup popup_opened">
+    <section class="popup" id="edit">
       <div class="popup__container">
-        <button type="button" class="popup__close-image" aria-label="Кнопка закрытия формы"></button>
-        <form class="popup__form" name="profile-edit">
+        <button type="button" id="closeEdit" class="popup__close-image" aria-label="Кнопка закрытия формы"></button>
+        <form id="editForm" class="popup__form" name="profile-edit">
           <h2 class="popup__heading">Редактировать профиль</h2>
-          <input class="popup__input" type="text" name="profile-name" placeholder="Жак-Ив Кусто">
-          <input class="popup__input" type="text" name="profile-description" placeholder="Исследователь океана">
+          <input class="popup__input" id="editName" type="text" name="profile-name" placeholder="Жак-Ив Кусто">
+          <input class="popup__input" id="editDescription" type="text" name="profile-description" placeholder="Исследователь океана">
           <button class="popup__save" type="submit" value="save-profile">Сохранить</button>
         </form>
+      </div>
+    </section>
+    <section class="popup" id="add">
+      <div class="popup__container">
+        <button type="button" id="closeAdd" class="popup__close-image" aria-label="Кнопка закрытия формы"></button>
+        <form class="popup__form" id="addForm" name="add-place">
+          <h2 class="popup__heading">Новое место</h2>
+          <input class="popup__input" id="addName" type="text" name="add-name" placeholder="Название">
+          <input class="popup__input" id="addLink" type="text" name="add-link" placeholder="Ссылка на картинку">
+          <button class="popup__save" type="submit" value="save-add">Создать</button>
+        </form>
+      </div>
+    </section>
+    <section class="popup" id="image">
+      <div class="popup__image-container">
+        <button type="button" id="closeImage" class="popup__close-image" aria-label="Кнопка закрытия формы"></button>
+        <img class="popup__image">
+        <p class="popup__image-text"></p>
       </div>
     </section>
   </main>
   <footer class="footer">
     <p class="footer__copyright">&copy; 2022 Mesto Russia</p>
   </footer>
+  <template id="card">
+    <div class="element">
+      <img class="element__image">
+      <button type="button" class="element__delete"></button>
+      <div class="element__description">
+        <p class="element__name"></p>
+        <button type="button" class="element__heart"></button>
+      </div>
+    </div>
+  </template>
+  <script src="./Js/index.js"></script>
 </body>
