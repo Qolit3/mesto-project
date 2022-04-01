@@ -1,7 +1,6 @@
 .elements {
   margin-top: 46.25px;
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
   row-gap: 20px;
   column-gap: 17px;
