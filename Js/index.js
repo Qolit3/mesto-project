@@ -9,6 +9,7 @@ function popupOpen(popupO) {
 }
 
 function popupClose(popupC) {
+  console.log(1);
   popupC.classList.remove('popup_opened');
 }
 
@@ -29,11 +30,14 @@ const editForm = document.querySelector('#editForm')
 
 function submitFormEdit (evt) {
     evt.preventDefault();
-    let nameChange = editName.value;
-    let descriptionChange = editDescription.value;
+    () => console.log(1);
+    const nameChange = editName.value;
+    const descriptionChange = editDescription.value;
     
     profileName.textContent = nameChange;
     profileDescription.textContent = descriptionChange;
+
+    
 }
 
 editForm.addEventListener('submit', submitFormEdit);
@@ -83,8 +87,8 @@ const addForm = document.querySelector('#addForm');
 addForm.addEventListener('submit', function(evt) {
   evt.preventDefault();
 
-  let addName = document.querySelector('#addName');
-  let addLink = document.querySelector('#addLink');
+  const addName = document.querySelector('#addName');
+  const addLink = document.querySelector('#addLink');
 
   
 
