@@ -27,8 +27,10 @@
         <button type="button" id="closeEdit" class="popup__close-image" aria-label="Кнопка закрытия формы"></button>
         <form id="editForm" class="popup__form" name="profile-edit" novalidate>
           <h2 class="popup__heading">Редактировать профиль</h2>
-          <input class="popup__input" id="editName" type="text" name="profile-name" placeholder="Жак-Ив Кусто">
-          <input class="popup__input" id="editDescription" type="text" name="profile-description" placeholder="Исследователь океана">
+          <input class="popup__input" id="editName" minlength="2" maxlength="40" type="text" name="profile-name" placeholder="Жак-Ив Кусто">
+          <span class="popup__validate" id="editNameValidate"></span>
+          <input class="popup__input" id="editDescription" minlength="2" maxlength="400" type="text" name="profile-description" placeholder="Исследователь океана">
+          <span class="popup__validate" id="editDescriptionValidate"></span>
           <button class="popup__save" type="submit" value="save-profile">Сохранить</button>
         </form>
       </div>
@@ -38,8 +40,10 @@
         <button type="button" id="closeAdd" class="popup__close-image" aria-label="Кнопка закрытия формы"></button>
         <form class="popup__form" id="addForm" name="add-place" novalidate>
           <h2 class="popup__heading">Новое место</h2>
-          <input class="popup__input" id="addName" type="text" name="add-name" placeholder="Название">
-          <input class="popup__input" id="addLink" type="text" name="add-link" placeholder="Ссылка на картинку">
+          <input required class="popup__input" id="addName" type="text" minlength="2" maxlength="30" name="add-name" placeholder="Название">
+          <span class="popup__validate" id="addNameValidate"></span>
+          <input required class="popup__input" id="addLink" type="url" name="add-link" placeholder="Ссылка на картинку">
+          <span class="popup__validate" id="addLinkValidate"></span>
           <button class="popup__save" type="submit" value="save-add">Создать</button>
         </form>
       </div>

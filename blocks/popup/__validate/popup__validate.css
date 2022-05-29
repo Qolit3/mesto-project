@@ -1,0 +1,25 @@
+.popup__validate {
+  color: #fff;
+  width: 358px;
+  position: absolute;
+  font-family: 'Inter';
+  font-style: normal; 
+  margin: 0;
+  line-height: 15px;
+  font-size: 12px;
+  font-weight: 400;
+  top: 111px;
+  left: 36px;
+}
+
+@media screen and (max-width: 640px) {
+  .popup__validate {
+    top: 125px;
+    width: 238px;
+    left: 22px;
+  }
+
+  .popup__validate:nth-of-type(2) {
+    top: 180px;
+  }
+}
