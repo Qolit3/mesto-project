@@ -148,20 +148,19 @@ const closeImage = document.querySelector('#closeImage');
 closeImage.addEventListener('click', () => popupClose(image));
 
 //закрытие на оверлэй, esc
-function deleteClick(popupEle) {
-  popupClose(popupEle)
+function deleteClick(evt) {
+  popupClose(document.querySelector(`#${evt.target.id}`));
 }  
 
 function deleteEsc(evt) {
   if (evt.keyCode === 27) {
-    console.log(evt.key);
-    popupClose(document.querySelector(`#${evt.target.id}`));
+    popupClose(document.querySelector(`.popup_opened`));
   }
 }
 
 function createOverEsc(popupEle) {
-popupEle.addEventListener('click', deleteClick(popupEle));
-popupEle.addEventListener('keydown', deleteEsc)
+popupEle.addEventListener('click', deleteClick);
+window.addEventListener('keydown', deleteEsc)
 }
 
 function deleteOverEsc(popupEle) {
@@ -171,72 +170,7 @@ function deleteOverEsc(popupEle) {
 
 //Валидация форм
 
-const profileForm = document.querySelector('#editForm');
-const profileNameInput = profileForm.querySelector('#editName');
-
-function showError(form, element, er) {
-  const errorText = form.querySelector(`#${element.id}Validate`);
-
-  element.classList.add('popup__input_er');
-  console.log(er);
-  errorText.textContent = er;
-  errorText.classList.add('popup__validate_active');
-}
-
-function hideError(form, element) {
-  const errorText = form.querySelector(`#${element.id}Validate`);
-
-  element.classList.remove('popup__input_er');
-  errorText.classList.remove('popup__validate_active');
-  errorText.textContent = '';
-}
-
-function isValid(form, element) {
-  if (!profileForm.valid) {
-    showError(form, element, element.validationMessage);
-  } else {
-    hideError(form, element);
-  }
-};
-
-function invalidInput(list) {
-  return list.some((element) => {
-    return !element.valid;
-  })
-};
-
-function toggleButton(list, button) {
-  if (invalidInput(list)) {
-    button.disabled = true;
-    button.classList.add('popup__save_inactive');
-  } else {
-    button.disabled = false;
-    button.classList.remove('popup__save_inactive');
-  }
-}
-
-function setInputListeners(form) {
-  const inputList = Array.from(form.querySelectorAll('.popup__input'));  
-  const submitButton = form.querySelector('.popup__save');
-
-  inputList.forEach((element) => {
-    element.addEventListener('input', () => {
-      isValid(form, element)
-      toggleButton(inputList, submitButton)
-    })
-  });
-};
-
-function validateAllforms() {
-  const formList = Array.from(document.querySelectorAll('.popup__form'));
-
-  formList.forEach((form) => {
-    form.addEventListener('submit', (evt) => evt.preventDefault()
-  );
-
-  setInputListeners(form);
-  });
-}
+import {validateAllforms} from './components/validation';
 
 validateAllforms();
 

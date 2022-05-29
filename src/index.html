@@ -27,9 +27,9 @@
         <button type="button" id="closeEdit" class="popup__close-image" aria-label="Кнопка закрытия формы"></button>
         <form id="editForm" class="popup__form" name="profile-edit" novalidate>
           <h2 class="popup__heading">Редактировать профиль</h2>
-          <input class="popup__input" id="editName" minlength="2" maxlength="40" type="text" name="profile-name" placeholder="Жак-Ив Кусто">
+          <input required class="popup__input" id="editName" minlength="2" maxlength="40" type="text" name="profile-name" placeholder="Жак-Ив Кусто">
           <span class="popup__validate" id="editNameValidate"></span>
-          <input class="popup__input" id="editDescription" minlength="2" maxlength="400" type="text" name="profile-description" placeholder="Исследователь океана">
+          <input required class="popup__input" id="editDescription" minlength="2" maxlength="400" type="text" name="profile-description" placeholder="Исследователь океана">
           <span class="popup__validate" id="editDescriptionValidate"></span>
           <button class="popup__save" type="submit" value="save-profile">Сохранить</button>
         </form>

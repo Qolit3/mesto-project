@@ -1,3 +1,11 @@
 .popup__save_inactive {
-  background-color: aqua;
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  border-radius: 2px;
+}
+
+.popup__save_inactive:hover {
+  background-color: white;
+  cursor: default;
 }

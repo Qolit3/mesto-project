@@ -12,6 +12,10 @@
   left: 36px;
 }
 
+.popup__validate:nth-of-type(2) {
+  top: 170px;
+}
+
 @media screen and (max-width: 640px) {
   .popup__validate {
     top: 125px;
