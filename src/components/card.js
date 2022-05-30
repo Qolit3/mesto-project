@@ -25,7 +25,7 @@ export const initialCards = [
   }
 ];
 
-import { popupOpen } from "./util";
+import { openPopup } from "./util";
 
 export const image = document.querySelector('#image');
 export const popupImage = document.querySelector('.popup__image');
@@ -36,10 +36,10 @@ export const closeImage = document.querySelector('#closeImage');
 export const cardsContainer = document.querySelector('.elements');
 export const card = document.querySelector('#card').content;
 
-export function firstPlaces() {
-  for (let i = 0; i < initialCards.length; i++) {
-    cardsContainer.prepend(addPlace(initialCards[i].name, initialCards[i].link));
-  }
+export function addFirstPlaces() {
+  initialCards.forEach((ele) => {
+    cardsContainer.prepend(addPlace(ele.name, ele.link));
+  });
 }
 
 //добавлени нового места
@@ -51,6 +51,7 @@ export function addPlace(placeName, placeLink) {
 
   const placePic = place.querySelector('.element__image');
   placePic.src = placeLink;
+  placePic.alt = placeName;
   place.querySelector('.element__name').textContent = placeName;
   
 
@@ -60,9 +61,10 @@ export function addPlace(placeName, placeLink) {
 
   place.querySelector('.element__image').addEventListener('click', function() {
     popupImage.src = placeLink;
+    popupImage.alt = placeName
     popupImageText.textContent = placeName;
 
-    popupOpen(image);
+    openPopup(image);
   });  
 
   place.querySelector('.element__delete').addEventListener('click', function () {

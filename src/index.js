@@ -1,71 +1,76 @@
 //Импорты и переменные
 
 import './index.css';
-import { image, closeImage, openAdd, closeAdd, add, edit, openEdit, closeEdit } from './components/modal';
-import {addForm, cardsContainer, addPlace, firstPlaces} from './components/card';
-import {validateAllforms} from './components/validate';
-import { popupClose, popupOpen } from './components/util';
+import { openAdd, add, edit, openEdit } from './components/modal';
+import {addForm, cardsContainer, addPlace, addFirstPlaces} from './components/card';
+import {enableValidation} from './components/validate';
+import { closePopup, openPopup } from './components/util';
 
 const editForm = document.querySelector('#editForm');
 
-let profileName = document.querySelector('.profile__name');
-let profileDescription = document.querySelector('.profile__description');
+export const profileName = document.querySelector('.profile__name');
+export const profileDescription = document.querySelector('.profile__description');
 
-let editName = document.querySelector('#editName');
-let editDescription = document.querySelector('#editDescription');
+export const editName = document.querySelector('#editName');
+export const editDescription = document.querySelector('#editDescription');
 
+const addName = document.querySelector('#addName');
+const addLink = document.querySelector('#addLink');
+const saveButton = document.querySelector('#saveAdd');
+
+editName.placeholder = profileName.textContent;
+editDescription.placeholder = profileDescription.textContent;
+
+editName.value = profileName.textContent;
+editDescription.value = profileDescription.textContent;
 //Слушатели
 
 editForm.addEventListener('submit', submitFormEdit);
-editForm.addEventListener('submit', () => popupClose(edit));
 
-openEdit.addEventListener('click', () => popupOpen(edit));
-closeEdit.addEventListener('click', () => popupClose(edit));
+openEdit.addEventListener('click', () => openPopup(edit));
+
+const closeButtons = document.querySelectorAll('.popup__close-image');
+closeButtons.forEach((ele) => {
+  const popup = ele.closest('.popup'); //Спасибо за совет!
+  ele.addEventListener('click', () => closePopup(popup));
+})
 
 addForm.addEventListener('submit', function(evt) {
-  evt.preventDefault();
-
-  const addName = document.querySelector('#addName');
-  const addLink = document.querySelector('#addLink');
-
-  
+  evt.preventDefault();  
 
   cardsContainer.prepend(addPlace(addName.value, addLink.value));
+  closePopup(add);
+  evt.target.reset();
   
-  addName.value = '';
-  addLink.value = '';
+  saveButton.disabled = true;
+  saveButton.classList.add('popup__save_inactive');
+
 });
 
-addForm.addEventListener('submit', () => popupClose(add));
-
-openAdd.addEventListener('click', () => popupOpen(add));
-closeAdd.addEventListener('click', () => popupClose(add));
-
-closeImage.addEventListener('click', () => popupClose(image));
+openAdd.addEventListener('click', () => openPopup(add));
 
 //сохранение формы
 
 function submitFormEdit (evt) {
     evt.preventDefault();
-    () => console.log(1);
-    const nameChange = editName.value;
-    const descriptionChange = editDescription.value;
     
-    profileName.textContent = nameChange;
-    profileDescription.textContent = descriptionChange;    
+    profileName.textContent = editName.value;
+    profileDescription.textContent = editDescription.value;   
+    closePopup(edit) 
 }
 
 //карточки
 
-firstPlaces();
+addFirstPlaces();
 
 //Валидация форм
-
-validateAllforms({
+const settings = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__save',
   inactiveButtonClass: 'popup__save_inactive',
   inputErrorClass: 'popup__input_er',
   errorClass: 'popup__validate_active'
-});
+}
+
+enableValidation(settings);
