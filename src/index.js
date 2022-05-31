@@ -2,7 +2,7 @@
 
 import './index.css';
 import { openAdd, add, edit, openEdit } from './components/modal';
-import {addForm, cardsContainer, addPlace, addFirstPlaces} from './components/card';
+import {addFirstPlaces ,addForm, cardsContainer, addPlace} from './components/card';
 import {enableValidation} from './components/validate';
 import { closePopup, openPopup } from './components/util';
 
@@ -16,18 +16,17 @@ export const editDescription = document.querySelector('#editDescription');
 
 const addName = document.querySelector('#addName');
 const addLink = document.querySelector('#addLink');
-const saveButton = document.querySelector('#saveAdd');
+const cardSubmitButton = document.querySelector('#saveAdd');
 
-editName.placeholder = profileName.textContent;
-editDescription.placeholder = profileDescription.textContent;
-
-editName.value = profileName.textContent;
-editDescription.value = profileDescription.textContent;
 //Слушатели
 
 editForm.addEventListener('submit', submitFormEdit);
 
-openEdit.addEventListener('click', () => openPopup(edit));
+openEdit.addEventListener('click', () => {
+  editName.value = profileName.textContent;
+  editDescription.value = profileDescription.textContent;
+  openPopup(edit);
+});
 
 const closeButtons = document.querySelectorAll('.popup__close-image');
 closeButtons.forEach((ele) => {
@@ -42,14 +41,16 @@ addForm.addEventListener('submit', function(evt) {
   closePopup(add);
   evt.target.reset();
   
-  saveButton.disabled = true;
-  saveButton.classList.add('popup__save_inactive');
+  ыButton.disabled = true;
+  cardSubmitButton.classList.add('popup__save_inactive');
 
 });
 
 openAdd.addEventListener('click', () => openPopup(add));
 
 //сохранение формы
+
+addFirstPlaces();
 
 function submitFormEdit (evt) {
     evt.preventDefault();
@@ -58,10 +59,6 @@ function submitFormEdit (evt) {
     profileDescription.textContent = editDescription.value;   
     closePopup(edit) 
 }
-
-//карточки
-
-addFirstPlaces();
 
 //Валидация форм
 const settings = {

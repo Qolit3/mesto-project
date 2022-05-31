@@ -3,7 +3,7 @@ import {closePopup} from './util';
 
 function handleOverlayClick(evt) {    
   if(evt.target === evt.currentTarget) {
-    closePopup(document.querySelector('.popup_opened'));
+    closePopup(evt.currentTarget);
   }
 }
   

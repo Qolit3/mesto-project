@@ -27,9 +27,9 @@
         <button type="button" id="closeEdit" class="popup__close-image" aria-label="Кнопка закрытия формы"></button>
         <form id="editForm" class="popup__form" name="profile-edit" novalidate>
           <h2 class="popup__heading">Редактировать профиль</h2>
-          <input required class="popup__input" id="editName" minlength="2" maxlength="40" type="text" name="profile-name">
+          <input required class="popup__input" id="editName" minlength="2" maxlength="40" type="text" name="profile-name" placeholder="Введите Имя">
           <span class="popup__validate" id="editNameValidate"></span>
-          <input required class="popup__input" id="editDescription" minlength="2" maxlength="400" type="text" name="profile-description">
+          <input required class="popup__input" id="editDescription" minlength="2" maxlength="400" type="text" name="profile-description" placeholder="Расскажите о себе">
           <span class="popup__validate" id="editDescriptionValidate"></span>
           <button class="popup__save" id="saveProfile" type="submit" value="save-profile">Сохранить</button>
         </form>
@@ -40,7 +40,7 @@
         <button type="button" id="closeAdd" class="popup__close-image" aria-label="Кнопка закрытия формы"></button>
         <form class="popup__form" id="addForm" name="add-place" novalidate>
           <h2 class="popup__heading">Новое место</h2>
-          <input required class="popup__input" id="addName" type="text" minlength="2" maxlength="30" name="add-name" placeholder="Название">
+          <input required class="popup__input" id="addName" type="text" minlength="2" maxlength="30" name="add-name" placeholder="Название места">
           <span class="popup__validate" id="addNameValidate"></span>
           <input required class="popup__input" id="addLink" type="url" name="add-link" placeholder="Ссылка на картинку">
           <span class="popup__validate" id="addLinkValidate"></span>

@@ -3,8 +3,6 @@ import { editName, editDescription, profileDescription, profileName} from '../in
 
 export function openPopup(popup) {
   popup.classList.add('popup_opened');
-  editName.value = profileName.textContent;
-  editDescription.value = profileDescription.textContent;
   createOverEsc(popup);
 }
 

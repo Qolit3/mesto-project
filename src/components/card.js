@@ -25,6 +25,17 @@ export const initialCards = [
   }
 ];
 
+/*fetch('https://mesto.nomoreparties.co/v1/plus-cohort-10/cards', {
+  headers: {
+    authorization: 'ae17cf5f-30f7-49c5-80a6-f47193e26f36'
+  }
+})
+.then((res) => {return res.json()})
+.then((res) => {
+  res.forEach((ele) => {
+    cardsContainer.prepend(addPlace(ele.name, ele.link));
+  });  
+});*/
 import { openPopup } from "./util";
 
 export const image = document.querySelector('#image');
