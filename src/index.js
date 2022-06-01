@@ -41,7 +41,7 @@ addForm.addEventListener('submit', function(evt) {
   closePopup(add);
   evt.target.reset();
   
-  ыButton.disabled = true;
+  cardSubmitButton.disabled = true;
   cardSubmitButton.classList.add('popup__save_inactive');
 
 });
