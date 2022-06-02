@@ -1,41 +1,4 @@
-export const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
-
-/*fetch('https://mesto.nomoreparties.co/v1/plus-cohort-10/cards', {
-  headers: {
-    authorization: 'ae17cf5f-30f7-49c5-80a6-f47193e26f36'
-  }
-})
-.then((res) => {return res.json()})
-.then((res) => {
-  res.forEach((ele) => {
-    cardsContainer.prepend(addPlace(ele.name, ele.link));
-  });  
-});*/
+import { getInitialCards, deleteCard, deleteLike, putLike, profile} from './api';
 import { openPopup } from "./util";
 
 export const image = document.querySelector('#image');
@@ -47,40 +10,56 @@ export const closeImage = document.querySelector('#closeImage');
 export const cardsContainer = document.querySelector('.elements');
 export const card = document.querySelector('#card').content;
 
-export function addFirstPlaces() {
-  initialCards.forEach((ele) => {
-    cardsContainer.prepend(addPlace(ele.name, ele.link));
-  });
-}
-
 //добавлени нового места
+getInitialCards(cardsContainer, addPlace);
 
 export const addForm = document.querySelector('#addForm');
 
-export function addPlace(placeName, placeLink) {
+export function addPlace(downloadedCard) {
   const place = card.querySelector('.element').cloneNode(true);
 
-  const placePic = place.querySelector('.element__image');
-  placePic.src = placeLink;
-  placePic.alt = placeName;
-  place.querySelector('.element__name').textContent = placeName;
-  
+  place.id = downloadedCard._id;
 
-  place.querySelector('.element__heart').addEventListener('click', function (evt) {
+  const heartsCounter = place.querySelector('.element__heart-counter');
+  heartsCounter.textContent = downloadedCard.likes.length;
+
+  const placePic = place.querySelector('.element__image');
+  placePic.src = downloadedCard.link;
+  placePic.alt = downloadedCard.name;
+  place.querySelector('.element__name').textContent = downloadedCard.name;
+  const heartElement = place.querySelector('.element__heart');
+
+  heartElement.addEventListener('click', function (evt) {
     evt.target.classList.toggle('element__heart_active');
-  });
+    if(evt.target.classList.contains('element__heart_active')) {
+      putLike(place, heartsCounter);
+    } else {
+      deleteLike(place, heartsCounter);
+  }});
 
   place.querySelector('.element__image').addEventListener('click', function() {
-    popupImage.src = placeLink;
-    popupImage.alt = placeName
-    popupImageText.textContent = placeName;
+    popupImage.src = downloadedCard.link;
+    popupImage.alt = downloadedCard.name
+    popupImageText.textContent = downloadedCard.name;
 
     openPopup(image);
   });  
 
-  place.querySelector('.element__delete').addEventListener('click', function () {
-    place.remove();
+  downloadedCard.likes.forEach((ele) => {
+    if(ele.name === profile.name) {
+      heartElement.classList.toggle('element__heart_active');
+      console.log(1);
+    }
   });
 
+  if(downloadedCard.owner.name === profile.name){
+    place.querySelector('.element__delete').addEventListener('click', function () {
+      console.log(place.id);
+      deleteCard(place)
+      place.remove();
+    });
+  } else {
+    place.querySelector('.element__delete').remove();
+  }
   return place;
 }

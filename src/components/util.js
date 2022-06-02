@@ -1,5 +1,4 @@
 import { createOverEsc, deleteOverEsc } from "./modal";
-import { editName, editDescription, profileDescription, profileName} from '../index';
 
 export function openPopup(popup) {
   popup.classList.add('popup_opened');

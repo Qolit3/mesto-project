@@ -1,0 +1,7 @@
+.element__heart-counter {
+  line-height: 16px;
+  font-size: 13px;
+  margin: 0 28px 0 0;
+  text-align: right;
+  font-weight: 400;
+}
