@@ -6,76 +6,73 @@ const config = {
   }
 }
 
-export const getInitialCards = (cardsContainer, addPlace) => {
+export const getInitialCards = () => {
   return fetch(`${config.baseUrl}/cards`, {
     headers: config.headers
   })
-  .then((res) => {return res.json()})
   .then((res) => {
-    console.log(res);
-    res.forEach((ele) => {
-      cardsContainer.append(addPlace(ele));
-    });  
-  })  
-  .catch((res) => alert(`Не удалось получить посты от сервера: ${res}`))
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка ${res.status}`)
+  })
 }
 
-export const putLike = (place, heartsCounter) => {
-  fetch(`${config.baseUrl}/cards/likes/${place.id}`, {
+export const getProfile = () => {
+  return fetch(`${config.baseUrl}/users/me`, {
+    headers: config.headers
+  })
+  .then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка ${res.status}`)
+  })
+}
+
+export const putLike = (place) => {
+  return fetch(`${config.baseUrl}/cards/likes/${place.id}`, {
     method: 'PUT',
     headers: config.headers
   })
   .then((res) => {
-    return res.json()
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка ${res.status}`)
   })
-  .then((res) => {
-    heartsCounter.textContent = res.likes.length;
-  })
-  .catch((res) => alert(`Не удалось поставить лайк: ${res}`))
+  
 }
 
-export const deleteLike = (place, heartsCounter) => {
-  fetch(`${config.baseUrl}/cards/likes/${place.id}`, {
+export const deleteLike = (place) => {
+  return fetch(`${config.baseUrl}/cards/likes/${place.id}`, {
     method: 'DELETE',
     headers: config.headers
   })
   .then((res) => {
-    return res.json()
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка ${res.status}`)
   })
-  .then((res) => {
-    heartsCounter.textContent = res.likes.length;
-  })
-  .catch((res) => alert(`Не удалось удалить лайк: ${res}`))
 }
 
 export const deleteCard = (place) => {
-  fetch(`${config.baseUrl}/cards/${place.id}`, {
+  return fetch(`${config.baseUrl}/cards/${place.id}`, {
     method: 'DELETE',
     headers: config.headers
   })
-  .catch((res) => alert(`Не удалось удалить карточку: ${res}`))
+  .then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка ${res.status}`)
+  })
+
 }
 
-let profile = {};
-
-export const getProfile = (profileAvatar, profileName, profileDescription) => {
-  fetch(`${config.baseUrl}/users/me`, {
-    headers: config.headers
-  })
-  .then((res) => {
-    return res.json()
-  })
-  .then((res) => {
-    profileName.textContent = res.name;
-    profileDescription.textContent = res.about;
-    profileAvatar.src = res.avatar;
-    profile = res;
-  })
-  .catch((res) => alert(`Не удалось получить профиль: ${res}`))
-}
-
-export const patchAvatar = (evt, avatarLink, profileAvatar, avatarSave, closePopup, changeAvatarPopup) => {
-  fetch(`${config.baseUrl}/users/me/avatar`, {
+export const patchAvatar = () => {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
     method: 'PATCH',
     headers: config.headers,
     body: JSON.stringify({
@@ -83,21 +80,16 @@ export const patchAvatar = (evt, avatarLink, profileAvatar, avatarSave, closePop
     })  
   })
   .then((res) => {
-    return res.json()
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка ${res.status}`)
   })
-  .then((res) => {
-    profileAvatar.src = res.avatar;
-  })
-  .then(() => {
-    avatarSave.textContent = 'Готово';
-    closePopup(changeAvatarPopup);
-    evt.target.reset();  
-  })
-  .catch((res) => alert(`Не удалось загрузить аватар: ${res}`))
+  
 }
 
-export const postCard = (evt, cardInfo, addName, addLink, cardSubmitButton, cardsContainer, addPlace, closePopup, add) => {
-  fetch(`${config.baseUrl}/cards`, {
+export const postCard = (addName, addLink) => {
+  return fetch(`${config.baseUrl}/cards`, {
     method: 'POST',
     headers: config.headers,
     body: JSON.stringify({
@@ -105,21 +97,17 @@ export const postCard = (evt, cardInfo, addName, addLink, cardSubmitButton, card
       link: addLink.value
     })
   })
-  .then((res) => {return res.json()})
   .then((res) => {
-    cardInfo = res;
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка ${res.status}`)
   })
-  .then(() => {
-    cardSubmitButton.textContent = 'Готово';
-    cardsContainer.prepend(addPlace(cardInfo));  
-    closePopup(add);
-    evt.target.reset();
-  })
-  .catch((res) => alert(`Не удалось загрузить пост: ${res}`))
+  
 }
 
-export const patchProfile = (editName, editDescription, profileName, profileDescription, profileSubmitBtn, closePopup, edit) => {
-  fetch(`${config.baseUrl}/users/me`, {
+export const patchProfile = (editName, editDescription) => {
+  return fetch(`${config.baseUrl}/users/me`, {
     method: 'PATCH',
     headers: config.headers,
     body: JSON.stringify({
@@ -127,18 +115,10 @@ export const patchProfile = (editName, editDescription, profileName, profileDesc
       about: editDescription.value
     })  
   })
-  .then((res) => {
-    return res.json();
+    .then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка ${res.status}`)
   })
-  .then((res) => {
-    profileName.textContent = res.name;
-    profileDescription.textContent = res.about;       
-  })
-  .then(() => {
-    profileSubmitBtn.textContent = 'Готово'
-    closePopup(edit);
-  })
-  .catch((res) => alert(`Не удалось обновить профиль: ${res}`))
 }
-
-export {profile};

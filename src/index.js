@@ -28,14 +28,21 @@ const addName = document.querySelector('#addName');
 const addLink = document.querySelector('#addLink');
 const cardSubmitButton = document.querySelector('#saveAdd');
 
-getProfile(profileAvatar, profileName, profileDescription);
+getProfile()
+  .then((res) => {
+    profileName.textContent = res.name;
+    profileDescription.textContent = res.about;
+    profileAvatar.src = res.avatar;
+    editName.value = profileName.textContent;
+    editDescription.value = profileDescription.textContent;
+    enableValidation(settings);
+})
 //Слушатели
 
 openEdit.addEventListener('click', () => {
-  editName.value = profileName.textContent;
-  editDescription.value = profileDescription.textContent;
-  profileSubmitBtn.textContent = 'Сохранить';
-  enableValidation(settings);
+  
+  profileSubmitBtn.textContent = 'Сохранить'
+  
   openPopup(edit);
 });
 
@@ -47,15 +54,25 @@ changeAvatar.addEventListener('mouseout', () => {
 });
 
 changeAvatar.addEventListener('click', () => {
-  avatarSave.textContent = 'Сохранить';
+  avatarSave.textContent = 'Сохранить'
   openPopup(changeAvatarPopup);
 })
 
 avatarForm.addEventListener('submit',(evt) => {
   evt.preventDefault();
+  avatarSave.disabled = true;
   avatarSave.textContent = 'Сохранение...';
   console.log(avatarLink.value);
-  patchAvatar(evt, avatarLink, profileAvatar, avatarSave, closePopup, changeAvatarPopup);  
+  patchAvatar()
+    .then((res) => {
+      profileAvatar.src = res.avatar;
+    })
+    .then(() => {
+      closePopup(changeAvatarPopup);
+      evt.target.reset();  
+    })
+    .catch((res) => alert(`Не удалось загрузить аватар: ${res}`))
+    .finally(() => avatarSave.textContent = 'Готово') 
 });
 
 editForm.addEventListener('submit', submitFormEdit);
@@ -68,10 +85,18 @@ closeButtons.forEach((ele) => {
 
 addForm.addEventListener('submit', function(evt) {
   evt.preventDefault();  
+  cardSubmitButton.disabled = true;
   cardSubmitButton.textContent = 'Создание...';
-  let cardInfo = {};  
+  
 
-  postCard(evt, cardInfo, addName, addLink, cardSubmitButton, cardsContainer, addPlace, closePopup, add);
+  Promise.all([getProfile(), postCard(addName, addLink)])
+    .then(([getedProfile, postedCard]) => {
+      cardsContainer.prepend(addPlace(postedCard, getedProfile));  
+      closePopup(add);
+      addForm.reset();
+    })
+    .catch((res) => alert(`Не удалось загрузить пост: ${res}`))
+    .finally(() => cardSubmitButton.textContent = 'Готово')
 });
 
 openAdd.addEventListener('click', () => {
@@ -84,12 +109,24 @@ openAdd.addEventListener('click', () => {
 
 function submitFormEdit (evt) {
     evt.preventDefault();
+    profileSubmitBtn.disabled = true;
     profileSubmitBtn.textContent = 'Сохранение...';
     profileName.textContent = editName.value;
     profileDescription.textContent = editDescription.value;
     
    
-    patchProfile(editName, editDescription, profileName, profileDescription, profileSubmitBtn, closePopup, edit);
+    patchProfile(editName, editDescription)
+      .then((res) => {
+        profileName.textContent = res.name;
+        profileDescription.textContent = res.about;       
+      })
+      .then(() => {
+        closePopup(edit);
+        editName.value = profileName.textContent;
+        editDescription.value = profileDescription.textContent;
+      })
+      .catch((res) => alert(`Не удалось обновить профиль: ${res}`))
+      .finally(() => profileSubmitBtn.textContent = 'Готово')
 }
 
 //Валидация форм
@@ -101,6 +138,3 @@ const settings = {
   inputErrorClass: 'popup__input_er',
   errorClass: 'popup__validate_active'
 }
-
-
-enableValidation(settings);

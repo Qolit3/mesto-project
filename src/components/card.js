@@ -1,4 +1,4 @@
-import { getInitialCards, deleteCard, deleteLike, putLike, profile} from './api';
+import { getInitialCards, deleteCard, deleteLike, putLike, getProfile} from './api';
 import { openPopup } from "./util";
 
 export const image = document.querySelector('#image');
@@ -9,15 +9,27 @@ export const closeImage = document.querySelector('#closeImage');
 
 export const cardsContainer = document.querySelector('.elements');
 export const card = document.querySelector('#card').content;
-
-//добавлени нового места
-getInitialCards(cardsContainer, addPlace);
-
 export const addForm = document.querySelector('#addForm');
+let profile = {};
+//добавлени нового места
 
-export function addPlace(downloadedCard) {
+Promise.all([getInitialCards(), getProfile()])
+  .then(([initialCards, profileInfo]) => {
+    profile = profileInfo;
+    console.log(profileInfo);
+    initialCards.forEach((ele) => {
+      cardsContainer.append(addPlace(ele, profile));
+    });
+  })
+  .catch((res) => alert(`Не удалось получить посты от сервера или данные профиля: ${res}`))
+
+
+
+
+
+export function addPlace(downloadedCard, profile) {
   const place = card.querySelector('.element').cloneNode(true);
-
+  
   place.id = downloadedCard._id;
 
   const heartsCounter = place.querySelector('.element__heart-counter');
@@ -29,12 +41,21 @@ export function addPlace(downloadedCard) {
   place.querySelector('.element__name').textContent = downloadedCard.name;
   const heartElement = place.querySelector('.element__heart');
 
-  heartElement.addEventListener('click', function (evt) {
-    evt.target.classList.toggle('element__heart_active');
-    if(evt.target.classList.contains('element__heart_active')) {
-      putLike(place, heartsCounter);
+  heartElement.addEventListener('click', function () {
+    if(!heartElement.classList.contains('element__heart_active')) {
+      putLike(place)
+      .then((res) => {
+        heartsCounter.textContent = res.likes.length;
+        heartElement.classList.toggle('element__heart_active');
+      })
+      .catch((res) => alert(`Не удалось поставить лайк: ${res}`))
     } else {
-      deleteLike(place, heartsCounter);
+      deleteLike(place)
+      .then((res) => {
+        heartsCounter.textContent = res.likes.length;
+        heartElement.classList.toggle('element__heart_active');
+      })
+      .catch((res) => alert(`Не удалось удалить лайк: ${res}`))
   }});
 
   place.querySelector('.element__image').addEventListener('click', function() {
@@ -56,6 +77,7 @@ export function addPlace(downloadedCard) {
     place.querySelector('.element__delete').addEventListener('click', function () {
       console.log(place.id);
       deleteCard(place)
+      .catch((res) => alert(`Не удалось удалить карточку: ${res}`))
       place.remove();
     });
   } else {
