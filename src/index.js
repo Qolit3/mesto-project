@@ -37,6 +37,7 @@ getProfile()
     editDescription.value = profileDescription.textContent;
     enableValidation(settings);
 })
+  .catch((res) => alert(`Не удалось получить данные профиля: ${res.status}`))
 //Слушатели
 
 openEdit.addEventListener('click', () => {
@@ -54,8 +55,9 @@ changeAvatar.addEventListener('mouseout', () => {
 });
 
 changeAvatar.addEventListener('click', () => {
-  avatarSave.textContent = 'Сохранить'
+  avatarSave.textContent = 'Сохранить';
   openPopup(changeAvatarPopup);
+  avatarSave.disabled = true;
 })
 
 avatarForm.addEventListener('submit',(evt) => {
@@ -102,6 +104,7 @@ addForm.addEventListener('submit', function(evt) {
 openAdd.addEventListener('click', () => {
   cardSubmitButton.textContent = 'Создать'
   cardSubmitButton.classList.add('popup__save_inactive');
+  cardSubmitButton.disabled = ture;
   openPopup(add);
 });
 

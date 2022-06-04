@@ -77,8 +77,9 @@ export function addPlace(downloadedCard, profile) {
     place.querySelector('.element__delete').addEventListener('click', function () {
       console.log(place.id);
       deleteCard(place)
+      .then(place.remove())
       .catch((res) => alert(`Не удалось удалить карточку: ${res}`))
-      place.remove();
+      
     });
   } else {
     place.querySelector('.element__delete').remove();

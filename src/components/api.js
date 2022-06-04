@@ -6,28 +6,27 @@ const config = {
   }
 }
 
-export const getInitialCards = () => {
-  return fetch(`${config.baseUrl}/cards`, {
-    headers: config.headers
-  })
-  .then((res) => {
+function _checkResponse(res)  {
+  
     if (res.ok) {
       return res.json();
     }
     return Promise.reject(`Ошибка ${res.status}`)
+  
+  }
+
+export const getInitialCards = () => {
+  return fetch(`${config.baseUrl}/cards`, {
+    headers: config.headers
   })
+  .then(_checkResponse)
 }
 
 export const getProfile = () => {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка ${res.status}`)
-  })
+  .then(_checkResponse)
 }
 
 export const putLike = (place) => {
@@ -35,12 +34,7 @@ export const putLike = (place) => {
     method: 'PUT',
     headers: config.headers
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка ${res.status}`)
-  })
+  .then(_checkResponse)
   
 }
 
@@ -49,12 +43,7 @@ export const deleteLike = (place) => {
     method: 'DELETE',
     headers: config.headers
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка ${res.status}`)
-  })
+  .then(_checkResponse)
 }
 
 export const deleteCard = (place) => {
@@ -62,12 +51,7 @@ export const deleteCard = (place) => {
     method: 'DELETE',
     headers: config.headers
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка ${res.status}`)
-  })
+  .then(_checkResponse)
 
 }
 
@@ -79,12 +63,7 @@ export const patchAvatar = () => {
       avatar: avatarLink.value
     })  
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка ${res.status}`)
-  })
+  .then(_checkResponse)
   
 }
 
@@ -97,12 +76,7 @@ export const postCard = (addName, addLink) => {
       link: addLink.value
     })
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка ${res.status}`)
-  })
+  .then(_checkResponse)
   
 }
 
@@ -115,10 +89,5 @@ export const patchProfile = (editName, editDescription) => {
       about: editDescription.value
     })  
   })
-    .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка ${res.status}`)
-  })
+  .then(_checkResponse)
 }
