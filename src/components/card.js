@@ -10,22 +10,8 @@ export const closeImage = document.querySelector('#closeImage');
 export const cardsContainer = document.querySelector('.elements');
 export const card = document.querySelector('#card').content;
 export const addForm = document.querySelector('#addForm');
-let profile = {};
+
 //добавлени нового места
-
-Promise.all([getInitialCards(), getProfile()])
-  .then(([initialCards, profileInfo]) => {
-    profile = profileInfo;
-    console.log(profileInfo);
-    initialCards.forEach((ele) => {
-      cardsContainer.append(addPlace(ele, profile));
-    });
-  })
-  .catch((res) => alert(`Не удалось получить посты от сервера или данные профиля: ${res}`))
-
-
-
-
 
 export function addPlace(downloadedCard, profile) {
   const place = card.querySelector('.element').cloneNode(true);

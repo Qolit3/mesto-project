@@ -5,7 +5,7 @@ import { openAdd, add, edit, openEdit } from './components/modal';
 import { addForm, cardsContainer, addPlace} from './components/card';
 import { enableValidation } from './components/validate';
 import { closePopup, openPopup } from './components/util';
-import { getProfile, patchAvatar, postCard, patchProfile } from './components/api'
+import { getProfile, patchAvatar, postCard, patchProfile, getInitialCards } from './components/api'
 
 const editForm = document.querySelector('#editForm');
 const changeAvatar = document.querySelector('.profile__avatar-change');
@@ -28,20 +28,33 @@ const addName = document.querySelector('#addName');
 const addLink = document.querySelector('#addLink');
 const cardSubmitButton = document.querySelector('#saveAdd');
 
-getProfile()
-  .then((res) => {
-    profileName.textContent = res.name;
-    profileDescription.textContent = res.about;
-    profileAvatar.src = res.avatar;
-    editName.value = profileName.textContent;
-    editDescription.value = profileDescription.textContent;
+let userProfile = {}
+let userId;
+
+Promise.all([getProfile(), getInitialCards()])
+  .then(([userData, cards]) => {
+      
+    profileName.textContent = userData.name;
+    profileDescription.textContent = userData.about;
+    profileAvatar.src = userData.avatar;
+    userProfile = userData;
+    editName.value = userProfile.name;
+  editDescription.value = userProfile.about;
+    userId = userData._id;
     enableValidation(settings);
-})
-  .catch((res) => alert(`Не удалось получить данные профиля: ${res.status}`))
+    cards.forEach((ele) => {
+      cardsContainer.append(addPlace(ele, userData));
+    });
+  })
+  .catch(err => {
+    alert(`Не удалось загрузить данные профиля или посты: ${err}`)
+  });
 //Слушатели
 
 openEdit.addEventListener('click', () => {
-  
+  editName.value = userProfile.name;
+  editDescription.value = userProfile.about;
+
   profileSubmitBtn.textContent = 'Сохранить'
   
   openPopup(edit);
@@ -91,9 +104,9 @@ addForm.addEventListener('submit', function(evt) {
   cardSubmitButton.textContent = 'Создание...';
   
 
-  Promise.all([getProfile(), postCard(addName, addLink)])
-    .then(([getedProfile, postedCard]) => {
-      cardsContainer.prepend(addPlace(postedCard, getedProfile));  
+  postCard(addName, addLink)
+    .then((res) => {
+      cardsContainer.prepend(addPlace(res, userProfile));  
       closePopup(add);
       addForm.reset();
     })
@@ -104,7 +117,7 @@ addForm.addEventListener('submit', function(evt) {
 openAdd.addEventListener('click', () => {
   cardSubmitButton.textContent = 'Создать'
   cardSubmitButton.classList.add('popup__save_inactive');
-  cardSubmitButton.disabled = ture;
+  cardSubmitButton.disabled = true;
   openPopup(add);
 });
 
