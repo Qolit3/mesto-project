@@ -50,7 +50,6 @@ const userInfoEx = new UserInfo(profileName, profileDescription, profileAvatar);
 
 
 export let userProfile = {};
-let items = [];
 
 Promise.all([userInfoEx.getUserInfo(), api.getCards()])
   .then(([userData, cards]) => {
@@ -73,7 +72,6 @@ Promise.all([userInfoEx.getUserInfo(), api.getCards()])
     }
 
     const popupAdd = new PopupWithForm('#add', (inputValue) => {
-      cardSubmitButton.disabled = true;
       cardSubmitButton.textContent = 'Создание...';
       
       api.addCard(inputValue[0], inputValue[1])
@@ -87,8 +85,7 @@ Promise.all([userInfoEx.getUserInfo(), api.getCards()])
     
     popupAdd.setEventListeners();
     
-    openAdd.addEventListener('click', () => {  
-      cardSubmitButton.disabled = true;
+    openAdd.addEventListener('click', () => {      
       popupAdd.open();
     });
 
@@ -104,7 +101,6 @@ Promise.all([userInfoEx.getUserInfo(), api.getCards()])
   });
 
 const popupEdit = new PopupWithForm('#edit', (inputValue) => {
-  profileSubmitBtn.disabled = true;
   profileSubmitBtn.textContent = 'Сохранение...';
 
   api.editProfile(inputValue[0], inputValue[1])
@@ -127,12 +123,10 @@ openEdit.addEventListener('click', () => {
 });
 
 const popupAvatar = new PopupWithForm('#avatar', (inputValue) => {
-  avatarSave.disabled = true;
   avatarSave.textContent = 'Сохранение...';
   
-  api.updateAvatar(inputValue[0])
-    .then((res) => {
-      profileAvatar.src = res.avatar;
+  userInfoEx.setAvatar(inputValue[0])
+    .then(() => {
       popupAvatar.close();
     })
     .catch((res) => alert(`Не удалось загрузить аватар: ${res}`))
@@ -151,7 +145,6 @@ changeAvatar.addEventListener('mouseout', () => {
 
 changeAvatar.addEventListener('click', () => {
   popupAvatar.open();
-  avatarSave.disabled = true;
 })
 
 export const popupImage = new PopupWithImage('#image')

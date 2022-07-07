@@ -22,7 +22,10 @@ export default class UserInfo{
 
   setAvatar(link) {
     return api.updateAvatar(link)
-    .then(res => this._avatar.src = res.link)
+    .then(res => {
+      this._avatar.src = res.avatar
+      
+    })
   }
 }
 
