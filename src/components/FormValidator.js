@@ -6,6 +6,7 @@ export default class FormValidator {
     this.inputErrorClass = settings.inputErrorClass;
     this.errorClass = settings.errorClass;
     this.formElement = formElement;
+    this._inputList = this.formElement.querySelectorAll(this.inputSelector);
   }
 
   _showInputError(inputElement, errorMessage) {
@@ -50,9 +51,7 @@ export default class FormValidator {
   };
 
   _setEventListeners() {
-    const inputList = Array.from(
-      this.formElement.querySelectorAll(this.inputSelector)
-    );
+    const inputList = Array.from(this._inputList);
     const buttonElement = this.formElement.querySelector(
       this.submitButtonSelector
     );

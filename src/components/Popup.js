@@ -1,77 +1,34 @@
-class Popup {
+export default class Popup {
   constructor(selector) {
     this._popup = document.querySelector(selector);
+    this._handleOverlayClick = (evt) => {
+      if(evt.target === evt.currentTarget) {
+        this.close();
+      }
+    };
+    this._handleEscKey = (evt) => {
+      if(evt.key === 'Escape') {
+        this.close();
+      }
+    }
+    this._popupClose = this._popup.querySelector('.popup__close-image');
   }
 
   open() {
     this._popup.classList.add('popup_opened')
+    this._popup.addEventListener('click', this._handleOverlayClick)
+    window.addEventListener('keydown', this._handleEscKey)
   }
 
   close() {
     this._popup.classList.remove('popup_opened')
+    this._popup.removeEventListener('click', this._handleOverlayClick)
+    window.removeEventListener('keydown', this._handleEscKey)
   }
 
   setEventListeners() {
-    this._popup.querySelector('.popup__close-image').addEventListener('click', () => {
+    this._popupClose.addEventListener('click', () => {
       this.close();
     })
-    this._popup.addEventListener('click', (evt) => {
-      if(evt.target === evt.currentTarget) {
-        this.close();
-      }
-    })
-    window.addEventListener('keydown', (evt) => {
-      if(evt.key === 'Escape') {
-        this.close();
-      }
-    })
-  }
-}
-
-export class PopupWithImage extends Popup {
-  constructor(selector) {
-    super(selector)
-  }
-
-  open(link, name) {
-    this._popup.classList.add('popup_opened');
-    this._popup.querySelector('.popup__image').src = link;
-    this._popup.querySelector('.popup__image-text').textContent = name;
-  } 
-}
-
-export class PopupWithForm extends Popup {
-  constructor(selector, callback) {
-    super(selector);
-    this._callback = callback;
-  }
-
-  setEventListeners() {
-    this._popup.addEventListener('submit', (evt) => {
-      evt.preventDefault();
-      
-      
-      this._callback()
-      this.close()
-        
-    });
-    this._popup.querySelector('.popup__close-image').addEventListener('click', () => {
-      this.close();
-    })
-    this._popup.addEventListener('click', (evt) => {
-      if(evt.target === evt.currentTarget) {
-        this.close();
-      }
-    })
-    window.addEventListener('keydown', (evt) => {
-      if(evt.key === 'Escape') {
-        this.close();
-      }
-    })
-  }
-
-  close() {
-    this._popup.classList.remove('popup_opened')
-    this._popup.querySelector('.popup__form').reset();
   }
 }
