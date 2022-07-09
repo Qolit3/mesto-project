@@ -14,8 +14,6 @@ export default class PopupWithForm extends Popup {
   
     this._popup.addEventListener('submit', (evt) => {
       evt.preventDefault();
-      this._submit.disabled = true;
-      this._submit.classList.add('popup__save_inactive');
       this._callback(this._getInputValues());  
       this._form.reset();    
     });

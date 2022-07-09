@@ -21,6 +21,7 @@ export const settings = {
   submitButtonSelector: '.popup__save',
   inactiveButtonClass: 'popup__save_inactive',
   inputErrorClass: 'popup__input_er',
-  errorClass: 'popup__validate_active'
+  errorClass: 'popup__validate_active',
+  formSelector: '.popup__form'
 }
 

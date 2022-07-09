@@ -1,31 +1,26 @@
-import { api } from '../index.js'
-
 export default class UserInfo{
   constructor(userNameSelector, userDescriptionSelector, userAvatarSelector) {
     this._name = userNameSelector;
     this._about = userDescriptionSelector;
     this._avatar = userAvatarSelector;
+    this._id;
   }
 
   getUserInfo() {
-    return api.getProfileInfo()  
+    this._user = {
+      name: this._name.textContent,
+      about: this._about.textContent,
+      avatar: this._avatar.src,
+      _id: this._id
+    }
+    return this._user;
   }
 
-  setUserInfo(name, about) {
-    return api.editProfile(name, about)
-    .then(res => {
-      
-      this._name.textContent = res.name;
-      this._about.textContent = res.about;
-    })
-  }
-
-  setAvatar(link) {
-    return api.updateAvatar(link)
-    .then(res => {
-      this._avatar.src = res.avatar
-      
-    })
+  setUserInfo({name, about, avatar, _id}) {
+    this._name.textContent = name;
+    this._about.textContent = about;
+    this._avatar.src = avatar;
+    this._id = _id;
   }
 }
 

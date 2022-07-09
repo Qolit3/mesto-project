@@ -6,7 +6,8 @@ export default class FormValidator {
     this.inputErrorClass = settings.inputErrorClass;
     this.errorClass = settings.errorClass;
     this.formElement = formElement;
-    this._inputList = this.formElement.querySelectorAll(this.inputSelector);
+    this._inputList = Array.from(this.formElement.querySelectorAll(this.inputSelector));
+    this._buttonElement = this.formElement.querySelector(this.submitButtonSelector);
   }
 
   _showInputError(inputElement, errorMessage) {
@@ -34,34 +35,29 @@ export default class FormValidator {
     }
   }
 
-  _hasInvalidInput(inputList) {
-    return inputList.some((input) => {
+  _hasInvalidInput() {
+    return this._inputList.some((input) => {
       return !input.validity.valid;
     });
   }
 
-  _toggleButtonState(inputList, buttonElement) {
-    if (this._hasInvalidInput(inputList)) {
-      buttonElement.classList.add(this.inactiveButtonClass);
-      buttonElement.disabled = true;
+  _toggleButtonState() {
+    if (this._hasInvalidInput()) {
+      this._buttonElement.classList.add(this.inactiveButtonClass);
+      this._buttonElement.disabled = true;
     } else {
-      buttonElement.classList.remove(this.inactiveButtonClass);
-      buttonElement.disabled = false;
+      this._buttonElement.classList.remove(this.inactiveButtonClass);
+      this._buttonElement.disabled = false;
     }
   };
 
   _setEventListeners() {
-    const inputList = Array.from(this._inputList);
-    const buttonElement = this.formElement.querySelector(
-      this.submitButtonSelector
-    );
-  
-    this._toggleButtonState(inputList, buttonElement);
-  
-    inputList.forEach((inputElement) => {
+    this._toggleButtonState();
+
+    this._inputList.forEach((inputElement) => {
       inputElement.addEventListener("input", () => {
         this._checkInputValidity(inputElement);
-        this._toggleButtonState(inputList, buttonElement);
+        this._toggleButtonState();
       });
     });
   };
@@ -71,5 +67,14 @@ export default class FormValidator {
     evt.preventDefault();
   });
     this._setEventListeners();
-  };  
-}
+  }
+  
+  resetValidation() {
+    this._toggleButtonState();
+
+    this._inputList.forEach((inputElement) => {
+      this._hideInputError(inputElement) 
+    }); 
+  }
+} 
+  

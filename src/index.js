@@ -5,20 +5,14 @@ import {
   openAdd,
   openEdit,
   cardsContainer,
-  editForm,
-  addForm,
   changeAvatar,
-  avatarForm,
   profileName,
   profileDescription,
   profileAvatar,
-  avatarLink,
   avatarSave,
   profileSubmitBtn,
   editName,
   editDescription,
-  addName,
-  addLink,
   cardSubmitButton,
   settings
 } from './components/const.js';
@@ -39,34 +33,33 @@ export const api = new Api({
   },
 })
 
-const editFormValidate = new FormValidator(settings, editForm);
-const addFormValidate = new FormValidator(settings, addForm);
-const avatarFormValidate = new FormValidator(settings, avatarForm);
+const formValidators = {}
 
-avatarFormValidate.enableValidation();
-addFormValidate.enableValidation();
+const enableValidation = (settings) => {
+  const formList = Array.from(document.querySelectorAll(settings.formSelector))
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(settings, formElement)
+    const formName = formElement.getAttribute('name')
+
+    formValidators[formName] = validator;
+   validator.enableValidation();
+  });
+};
 
 const userInfoEx = new UserInfo(profileName, profileDescription, profileAvatar);
 
-
-export let userProfile = {};
-
-Promise.all([userInfoEx.getUserInfo(), api.getCards()])
+Promise.all([api.getProfileInfo(), api.getCards()])
   .then(([userData, cards]) => {
-    profileName.textContent = userData.name;
-    profileDescription.textContent = userData.about;
-    profileAvatar.src = userData.avatar;
-    userProfile = userData;
-    
+    userInfoEx.setUserInfo(userData);
 
     editName.value = userData.name;
     editDescription.value = userData.about;
-    editFormValidate.enableValidation();
+    enableValidation(settings);
 
     function createCard (item) {
       const card = new Card(item, '#card', () => {
         popupImage.open(item.link, item.name);
-      });
+      }, api, userInfoEx);
       const cardElement = card.generate();
       return cardElement 
     }
@@ -85,7 +78,8 @@ Promise.all([userInfoEx.getUserInfo(), api.getCards()])
     
     popupAdd.setEventListeners();
     
-    openAdd.addEventListener('click', () => {      
+    openAdd.addEventListener('click', () => {   
+      formValidators['add-place'].resetValidation();   
       popupAdd.open();
     });
 
@@ -105,8 +99,7 @@ const popupEdit = new PopupWithForm('#edit', (inputValue) => {
 
   api.editProfile(inputValue[0], inputValue[1])
   .then((res) => {
-    profileName.textContent = res.name;
-    profileDescription.textContent = res.about;
+    userInfoEx.setUserInfo(res);
     popupEdit.close();
   })
   .catch((res) => alert(`Не удалось обновить профиль: ${res}`))
@@ -118,6 +111,7 @@ popupEdit.setEventListeners();
 openEdit.addEventListener('click', () => {
   editName.value = profileName.textContent;
   editDescription.value = profileDescription.textContent;
+  formValidators['profile-edit'].resetValidation();   
   
   popupEdit.open();
 });
@@ -125,8 +119,9 @@ openEdit.addEventListener('click', () => {
 const popupAvatar = new PopupWithForm('#avatar', (inputValue) => {
   avatarSave.textContent = 'Сохранение...';
   
-  userInfoEx.setAvatar(inputValue[0])
-    .then(() => {
+  api.updateAvatar(inputValue[0])
+    .then((res) => {
+      userInfoEx.setUserInfo(res)
       popupAvatar.close();
     })
     .catch((res) => alert(`Не удалось загрузить аватар: ${res}`))
@@ -144,6 +139,7 @@ changeAvatar.addEventListener('mouseout', () => {
 });
 
 changeAvatar.addEventListener('click', () => {
+  formValidators['avatar-edit'].resetValidation();   
   popupAvatar.open();
 })
 
